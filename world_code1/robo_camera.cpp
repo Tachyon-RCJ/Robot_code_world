@@ -19,7 +19,7 @@ int goRad = 185;
 int radsbr;
 int radsbl;
 int* ballRD;
-String atack_goal_color = "";
+String atack_goal_color = "blue";
 
 String cameraLBuf = "";
 String cameraRBuf = "";
