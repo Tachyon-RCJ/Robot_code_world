@@ -175,9 +175,11 @@ void loop() {
     strongTurn = false;
   }
   
+  
   if(abs(gbrads) < 130 && atack_goal_color == "blue"){
     pitch = gbrads*(-1);
   }
+  
 
   /*
   
