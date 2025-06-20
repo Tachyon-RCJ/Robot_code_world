@@ -67,7 +67,7 @@ SoftwareSerial mySerial1(11, 12); // RX, TX
 SoftwareSerial mySerial2(17, 16); // RX, TX
 #include <Arduino.h>
 #include <math.h>
-
+void pinkColorWaveStep();
 //==========MAIN===============================================================
 void setup() {
   pinMode(6, OUTPUT);
@@ -88,6 +88,7 @@ void setup() {
   pid.SetSampleTime(10); // PID制御の更新周期（ミリ秒）
   LittleFS.begin();
   posi = "attacker";
+  /*
   if(digitalRead(23) == HIGH){
     atack_goal_color = "blue";
     pixels.setPixelColor(5, pixels.Color(0,0,2));
@@ -99,19 +100,20 @@ void setup() {
     pixels.setPixelColor(6, pixels.Color(2,2,0));
     pixels.show();
   }
+    */
   mySerial.println("Se/PChange");
   tone(PINNO,370,BEAT) ; // ファ#
   delay(BEAT) ;
   tone(PINNO,293,BEAT) ; // レ
   delay(BEAT) ;
-  tone(PINNO,220,BEAT) ; // ラ
-  delay(BEAT) ;
-  tone(PINNO,293,BEAT) ; // レ
-  delay(BEAT) ;
-  tone(PINNO,330,BEAT) ; // ミ
-  delay(BEAT) ;
-  tone(PINNO,440,BEAT+100) ; // ラ
-  delay(400+BEAT) ;
+  //tone(PINNO,220,BEAT) ; // ラ
+  //delay(BEAT) ;
+  //tone(PINNO,293,BEAT) ; // レ
+  //delay(BEAT) ;
+  //tone(PINNO,330,BEAT) ; // ミ
+  //delay(BEAT) ;
+  //tone(PINNO,440,BEAT+100) ; // ラ
+  //delay(400+BEAT) ;
   loodLineSet();
   pixels.setPixelColor(5, pixels.Color(0,0,0));
   pixels.setPixelColor(6, pixels.Color(0,0,0));
@@ -172,12 +174,14 @@ void loop() {
   } else if (abs(pitch) < 10 && strongTurn == true){
     strongTurn = false;
   }
-  /*
+  
+  
   if(abs(gbrads) < 130 && atack_goal_color == "blue"){
     pitch = gbrads*(-1);
-    Serial.print("gbrads: ");
-    Serial.println(gbrads);
   }
+  
+
+  /*
   
   if(abs(gyrads) < 130 && atack_goal_color == "yellow"){
     pitch = gyrads*(-1);
@@ -198,7 +202,8 @@ void loop() {
   if (strongTurn){
     MoterSerial(170, 170, -170, -170);
   }
-  Serial.println(String(pitch));
+  Serial.println(String(pitch) + " " + String(gbrads) + " " + String(jairo));
+  pinkColorWaveStep();
   //Serial.println(String(intoutput));
   /*
   MoterSerial(intoutput, intoutput, -intoutput, -intoutput);
@@ -335,6 +340,7 @@ void loop1() {
       
       
       
+      
       //delay(3000);
       /*
       if (abs(rads) < 181){
@@ -390,6 +396,22 @@ void setColor(int *ledArray, int *color) {
       pixels.setPixelColor(i, 0); // LEDをオフにする
     }
   }
+}
+void pinkColorWaveStep() {
+    static int t = 0;
+    for (int i = 0; i < LED_COUNT; i++) {
+        // ピンクの色味を波状に変化させる
+        float wave = sin(2 * PI * (i + t * 0.2) / LED_COUNT);
+        int r = 110 + 15 * wave; // 220〜250
+        int g = 10  + 5 * wave; // 30〜40
+        int b = 50 + 20 * wave; // 120〜160
+        r = constrain(r, 0, 100);
+        g = constrain(g, 0, 100);
+        b = constrain(b, 0, 100);
+        pixels.setPixelColor(i, pixels.Color(r, g, b));
+    }
+    pixels.show();
+    t++;
 }
 //=============================================================================
 
