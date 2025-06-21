@@ -28,9 +28,11 @@ int roboGoRad(int r, int d){
   int reRad = r*1.5;
   
   if(d != -1){
+    /*
     if((45 <= abs(r) <= 70) && (d < 90)){//機体の近くのボールは大きめに回り込む
       reRad = r*2.8;
     }
+    */
     if(abs(r) > 110){ //遠かったら近くまで行く
       if(d > 190){
         reRad = r;
