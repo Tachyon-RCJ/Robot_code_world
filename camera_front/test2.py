@@ -40,182 +40,68 @@ sensor.set_auto_exposure(False, exposure_us=6500)#大会4500
 #sensor.set_auto_gain(False, gain_db=15)
 #sensor.set_auto_exposure(False, exposure_us=4500)
 """
-sensor.set_auto_whitebal(False,(1.92073, 0.119987, 1.0006831))
+sensor.set_auto_whitebal(False, rgb_gain_db=(1.92073, 0.119987, 1.0006831))
 clock = time.clock()
 tim1 = Timer(4, freq=1000)
 hoko=0 #真後ろぎりぎりにあるボールの回り込み方向保存
 startTime = 0
 shootMove = False
-#周囲検知関数
-def check_green_way0(img,x1,y1,x2,y2,machine_area,hugo):
-    distance_max = 0;
-    for i1 in range(20):
-        i = int(i1 * 235/20)
-        if i != 0:
-            x = int(x1 + (x2 - x1) * (i - 1) / (y1 - y2))
-            y = 235 - (i - 1)
-            pixel_o = image.rgb_to_lab(img.get_pixel(x, y))
-        else:
-            pixel_o = img.get_pixel(0, 0)
-        if i != 234:
-            x = int(x1 + (x2 - x1) * (i + 1) / (y1 - y2))
-            y = 235 - (i + 1)
-            pixel_n = image.rgb_to_lab(img.get_pixel(x, y))
-        else:
-            pixel_n = img.get_pixel(0, 0)
-        x = int(x1 + (x2 - x1) * i / (y1 - y2))
-        y = 235 - i
-        pixel = image.rgb_to_lab(img.get_pixel(x, y))
-        if i < machine_area:
-            img.draw_circle(x,y,1,(255, 0, 0))
-        else:
-            if thresholds_g[0] <= pixel[0] <= thresholds_g[1] and \
-               thresholds_g[2] <= pixel[1] <= thresholds_g[3] and \
-               thresholds_g[4] <= pixel[2] <= thresholds_g[5]:
-                if(thresholds_g[0] <= pixel_o[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_o[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_o[2] <= thresholds_g[5]) or \
-                  (thresholds_g[0] <= pixel_n[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_n[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_n[2] <= thresholds_g[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-                    if distance_max < int(math.sqrt((x - int(x1 + (x2 - x1) * machine_area / 240))**2 + (y - machine_area)**2)):
-                        distance_max = int(math.sqrt((x - int(x1 + (x2 - x1) * machine_area / 240))**2 + (y - machine_area)**2))
-            else:
-                if(thresholds_g[0] <= pixel_o[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_o[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_o[2] <= thresholds_g[5]) and \
-                  (thresholds_g[0] <= pixel_n[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_n[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_n[2] <= thresholds_g[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            """
-            if thresholds_b[0] <= pixel[0] <= thresholds_b[1] and \
-               thresholds_b[2] <= pixel[1] <= thresholds_b[3] and \
-               thresholds_b[4] <= pixel[2] <= thresholds_b[5]:
-                if(thresholds_b[0] <= pixel_o[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_o[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_o[2] <= thresholds_b[5]) or \
-                  (thresholds_b[0] <= pixel_n[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_n[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_n[2] <= thresholds_b[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            else:
-                if(thresholds_b[0] <= pixel_o[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_o[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_o[2] <= thresholds_b[5]) and \
-                  (thresholds_b[0] <= pixel_n[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_n[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_n[2] <= thresholds_b[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            if thresholds_y[0] <= pixel[0] <= thresholds_y[1] and \
-               thresholds_y[2] <= pixel[1] <= thresholds_y[3] and \
-               thresholds_y[4] <= pixel[2] <= thresholds_y[5]:
-                if(thresholds_y[0] <= pixel_o[0] <= thresholds_y[1] and \
-                   thresholds_y[2] <= pixel_o[1] <= thresholds_y[3] and \
-                   thresholds_y[4] <= pixel_o[2] <= thresholds_y[5]) or \
-                  (thresholds_y[0] <= pixel_n[0] <= thresholds_y[1] and \
-                   thresholds_y[2] <= pixel_n[1] <= thresholds_y[3] and \
-                   thresholds_y[4] <= pixel_n[2] <= thresholds_y[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            else:
-                if(thresholds_g[0] <= pixel_o[0] <= thresholds_y[1] and \
-                   thresholds_g[2] <= pixel_o[1] <= thresholds_y[3] and \
-                   thresholds_g[4] <= pixel_o[2] <= thresholds_y[5]) and \
-                  (thresholds_g[0] <= pixel_n[0] <= thresholds_y[1] and \
-                   thresholds_g[2] <= pixel_n[1] <= thresholds_y[3] and \
-                   thresholds_g[4] <= pixel_n[2] <= thresholds_y[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            """
-    return distance_max
+yokoline=170#画面上での横線の座標
+tateline=153#画面上での縦線の座標 白162　黒152
+point_675 = [
+(tateline - 104,142,10), (tateline - 120,128,20), (tateline - 126,122,30), (tateline - 132,117,40), (tateline - 134,115,50),
+(tateline - 136,113,60), (tateline - 137,112,70), (tateline - 139,111,80), (tateline - 140,110,90), (tateline - 141,109,100)
+]
+point_45 = [
+(tateline - 74,117,10), (tateline - 85,99,20), (tateline - 92,89,30), (tateline - 95,83,40), (tateline - 97,80,50),
+(tateline - 99,77,60), (tateline - 100,75,70), (tateline - 102,73,80), (tateline - 102,72,90), (tateline - 103,71,100)
+]
+point_225 = [
+(tateline - 39,101,10), (tateline - 44,82,20), (tateline - 47,71,30), (tateline - 49,64,40), (tateline - 50,60,50),
+(tateline - 52,56,60), (tateline - 52,53,70), (tateline - 53,52,80), (tateline - 53,51,90), (tateline - 54,49,100)
+]
+point0 = [
+(tateline,97,10), (tateline,77,20), (tateline,65,30), (tateline,58,40), (tateline,54,50),
+(tateline,50,60), (tateline,47,70), (tateline,45,80), (tateline,43,90), (tateline,42,100)
+]
+point225 = [
+(tateline + 39,101,10), (tateline + 44,82,20), (tateline + 47,71,30), (tateline + 49,64,40), (tateline + 50,60,50),
+(tateline + 52,56,60), (tateline + 52,53,70), (tateline + 53,52,80), (tateline + 53,51,90), (tateline + 54,49,100)
+]
+point45 = [
+(tateline + 74,117,10), (tateline + 85,99,20), (tateline + 92,89,30), (tateline + 95,83,40), (tateline + 97,80,50),
+(tateline + 99,77,60), (tateline + 100,75,70), (tateline + 102,73,80), (tateline + 102,72,90), (tateline + 103,71,100)
+]
+point675 = [
+(tateline + 104,142,10), (tateline + 120,128,20), (tateline + 126,122,30), (tateline + 132,117,40), (tateline + 134,115,50),
+(tateline + 136,113,60), (tateline + 137,112,70), (tateline + 139,111,80), (tateline + 140,110,90), (tateline + 141,109,100)
+]
+court_max = [0,0,0,0,0,0,0]#一番遠くの検知した緑の距離
 
-def check_green_way1(img,x1,y1,x2,y2,machine_area,hugo):
+#周囲検知関数
+def check_green(points):
     distance_max = 0;
-    for i1 in range(20):
-        i = int(i1 * 152/20)
-        if i != 0:
-            x = 152 + (i - 1) * hugo
-            y = int(y1 + (y2 - y1) * (i - 1) / 152)
-            pixel_o = image.rgb_to_lab(img.get_pixel(x, y))
+    pixel_sum = [0, 0, 0]
+    for x, y, d in points:
+        for dx in range(-1, 2):
+            for dy in range(-1, 2):
+                pixel = image.rgb_to_lab(img.get_pixel(x + dx, y + dy))
+                pixel_sum[0] += pixel[0]
+                pixel_sum[1] += pixel[1]
+                pixel_sum[2] += pixel[2]
+        pixel_sum[0] /= 9
+        pixel_sum[1] /= 9
+        pixel_sum[2] /= 9
+        if thresholds_g[0] <= pixel[0] <= thresholds_g[1] and \
+           thresholds_g[2] <= pixel[1] <= thresholds_g[3] and \
+           thresholds_g[4] <= pixel[2] <= thresholds_g[5]:
+            img.draw_circle(x,y,2,(0, 255, 0))
+            distance_max = max(distance_max,d)
         else:
-            pixel_o = img.get_pixel(0, 0)
-        if i != 151:
-            x = 152 + (i - 1) * hugo
-            y = int(y1 + (y2 - y1) * (i + 1) / 152)
-            pixel_n = image.rgb_to_lab(img.get_pixel(x, y))
-        else:
-            pixel_n = img.get_pixel(0, 0)
-        x = 152 + i * hugo
-        y = int(y1 + (y2 - y1) * i / 152)
-        pixel = image.rgb_to_lab(img.get_pixel(x, y))
-        if i < machine_area:
-            img.draw_circle(x,y,1,(255, 0, 0))
-        else:
-            if thresholds_g[0] <= pixel[0] <= thresholds_g[1] and \
-               thresholds_g[2] <= pixel[1] <= thresholds_g[3] and \
-               thresholds_g[4] <= pixel[2] <= thresholds_g[5]:
-                if(thresholds_g[0] <= pixel_o[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_o[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_o[2] <= thresholds_g[5]) or \
-                  (thresholds_g[0] <= pixel_n[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_n[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_n[2] <= thresholds_g[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-                    if distance_max < int(math.sqrt((x - (152 + machine_area * hugo))**2 + (y - int(y1 + (y2 - y1) * machine_area / 152))**2)):
-                        distance_max = int(math.sqrt((x - (152 + machine_area * hugo))**2 + (y - int(y1 + (y2 - y1) * machine_area / 152))**2))
-            else:
-                if(thresholds_g[0] <= pixel_o[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_o[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_o[2] <= thresholds_g[5]) and \
-                  (thresholds_g[0] <= pixel_n[0] <= thresholds_g[1] and \
-                   thresholds_g[2] <= pixel_n[1] <= thresholds_g[3] and \
-                   thresholds_g[4] <= pixel_n[2] <= thresholds_g[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-                    if distance_max < int(math.sqrt((x - (152 + machine_area * hugo))**2 + (y - int(y1 + (y2 - y1) * machine_area / 152))**2)):
-                        distance_max = int(math.sqrt((x - (152 + machine_area * hugo))**2 + (y - int(y1 + (y2 - y1) * machine_area / 152))**2))
-            """
-            if thresholds_b[0] <= pixel[0] <= thresholds_b[1] and \
-               thresholds_b[2] <= pixel[1] <= thresholds_b[3] and \
-               thresholds_b[4] <= pixel[2] <= thresholds_b[5]:
-                if(thresholds_b[0] <= pixel_o[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_o[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_o[2] <= thresholds_b[5]) or \
-                  (thresholds_b[0] <= pixel_n[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_n[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_n[2] <= thresholds_b[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            else:
-                if(thresholds_b[0] <= pixel_o[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_o[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_o[2] <= thresholds_b[5]) and \
-                  (thresholds_b[0] <= pixel_n[0] <= thresholds_b[1] and \
-                   thresholds_b[2] <= pixel_n[1] <= thresholds_b[3] and \
-                   thresholds_b[4] <= pixel_n[2] <= thresholds_b[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            if thresholds_y[0] <= pixel[0] <= thresholds_y[1] and \
-               thresholds_y[2] <= pixel[1] <= thresholds_y[3] and \
-               thresholds_y[4] <= pixel[2] <= thresholds_y[5]:
-                if(thresholds_y[0] <= pixel_o[0] <= thresholds_y[1] and \
-                   thresholds_y[2] <= pixel_o[1] <= thresholds_y[3] and \
-                   thresholds_y[4] <= pixel_o[2] <= thresholds_y[5]) or \
-                  (thresholds_y[0] <= pixel_n[0] <= thresholds_y[1] and \
-                   thresholds_y[2] <= pixel_n[1] <= thresholds_y[3] and \
-                   thresholds_y[4] <= pixel_n[2] <= thresholds_y[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            else:
-                if(thresholds_g[0] <= pixel_o[0] <= thresholds_y[1] and \
-                   thresholds_g[2] <= pixel_o[1] <= thresholds_y[3] and \
-                   thresholds_g[4] <= pixel_o[2] <= thresholds_y[5]) and \
-                  (thresholds_g[0] <= pixel_n[0] <= thresholds_y[1] and \
-                   thresholds_g[2] <= pixel_n[1] <= thresholds_y[3] and \
-                   thresholds_g[4] <= pixel_n[2] <= thresholds_y[5]):
-                    img.draw_circle(x,y,1,(0, 255, 0))
-            """
+            img.draw_circle(x,y,2,(255, 0, 0))
     return distance_max
 
 while(True):
-    yokoline=170#画面上での横線の座標
-    tateline=153#画面上での縦線の座標 白162　黒152
     kick_area = [tateline-17,yokoline-61,34,10]#[x,y,w,h]
     areaA=areaB=areaC=areaD=areaLine=0#色の面積の最大値を配列にして保存
     rectA=rectB=rectC=rectD=rectLine=0#取得した中心のX座標、Y座標、ブロックの横幅、縦幅の値を配列に
@@ -230,21 +116,11 @@ while(True):
     distance_b = 0
     distance_y = 0
     clock.tick()
-    court_max = [0,0,0,0,0,0,0]#一番遠くの検知した緑の距離
     try:
         img = sensor.snapshot()
     except:
         img = None;
     if not img == None:
-
-        #周囲検知
-        court_max[0] = check_green_way1(img,152,235,304,99,100,1)#67.5度
-        court_max[1] = check_green_way0(img,152,235,304,-7,105,1)#45度
-        court_max[2] = check_green_way0(img,152,235,304,-292,110,1)#22.5度
-        court_max[3] = check_green_way0(img,152,235,152,0,115,1)#0度
-        court_max[4] = check_green_way0(img,152,235,0,-292,110,-1)#-22.5度
-        court_max[5] = check_green_way0(img,152,235,0,-7,105,-1)#-45度
-        court_max[6] = check_green_way1(img,152,235,0,99,100,-1)#-67.5度
 
         blobs = img.find_blobs([thresholds1], pixels_threshold=1, area_threshold=1, merge=True,margin=3)#ボールの色探索
         if blobs:
@@ -370,6 +246,14 @@ while(True):
             rads4 = 185
         rads4 = 185
 
+        court_max[0] = check_green(point675)#67.5度
+        court_max[1] = check_green(point45)#45度
+        court_max[2] = check_green(point225)#22.5度
+        court_max[3] = check_green(point0)#0度
+        court_max[4] = check_green(point_225)#-22.5度
+        court_max[5] = check_green(point_45)#-45度
+        court_max[6] = check_green(point_675)#-67.5度
+
         preRads = rads
         img.draw_rectangle(tateline-65,yokoline-30,130,100,(0,255,255))
         img.draw_line(0,yokoline,320,yokoline)#横線の描画
@@ -410,5 +294,5 @@ while(True):
         uart.write("u")
         uart.writechar(court_max[6])
 
-        print(kick)
+        print(court_max)
         #print(int(math.degrees(math.atan2(val,-vall))),rads, math.sqrt(val**2+vall**2))
