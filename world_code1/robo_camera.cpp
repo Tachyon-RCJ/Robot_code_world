@@ -148,23 +148,23 @@ int* cameraCheck(){
       //rWorldSize = cameraRBuf.substring(b1Index + 1, f1Index).toInt();
     //}
     if (f1Index != -1 && g1Index != -1) {
-      surrounding[15] = cameraRBuf.substring(f1Index + 1, g1Index).toInt();
+      surrounding[15] = cameraRBuf.substring(f1Index + 1, g1Index).toInt()*2;
     }
     if (g1Index != -1 && h1Index != -1) {
-      surrounding[14] = cameraRBuf.substring(g1Index + 1, h1Index).toInt();
+      surrounding[14] = cameraRBuf.substring(g1Index + 1, h1Index).toInt()*2;
     }
     if (h1Index != -1 && i1Index != -1) {
-      surrounding[13] = cameraRBuf.substring(h1Index + 1, i1Index).toInt();
+      surrounding[13] = cameraRBuf.substring(h1Index + 1, i1Index).toInt()*2;
     }
     if (i1Index != -1 && j1Index != -1) {
-      surrounding[12] = cameraRBuf.substring(i1Index + 1, j1Index).toInt();
+      surrounding[12] = cameraRBuf.substring(i1Index + 1, j1Index).toInt()*2;
     }
     if (j1Index != -1) {
       int nextIndex = j1Index + 1;
       while (nextIndex < cameraRBuf.length() && isDigit(cameraRBuf[nextIndex])) {
         nextIndex++;
       }
-      surrounding[11] = cameraRBuf.substring(j1Index + 1, nextIndex).toInt();
+      surrounding[11] = cameraRBuf.substring(j1Index + 1, nextIndex).toInt()*2;
     }
     /*
     if (cameraRBuf.charAt(cameraRBufLen - 1) == 'd'){
@@ -234,23 +234,23 @@ int* cameraCheck(){
       //lWorldSize = cameraLBuf.substring(b2Index + 1, f2Index).toInt();
     //}
     if (f2Index != -1 && g2Index != -1) {
-      surrounding[15] = max(surrounding[15], cameraLBuf.substring(f2Index + 1, g2Index).toInt());
+      surrounding[15] = max(surrounding[15], cameraLBuf.substring(f2Index + 1, g2Index).toInt())*2;
     }
     if (g2Index != -1 && h2Index != -1) {
-      surrounding[0] = cameraLBuf.substring(g2Index + 1, h2Index).toInt();
+      surrounding[0] = cameraLBuf.substring(g2Index + 1, h2Index).toInt()*2;
     }
     if (h2Index != -1 && i2Index != -1) {
-      surrounding[1] = cameraLBuf.substring(h2Index + 1, i2Index).toInt();
+      surrounding[1] = cameraLBuf.substring(h2Index + 1, i2Index).toInt()*2;
     }
     if (i2Index != -1 && j2Index != -1) {
-      surrounding[2] = cameraLBuf.substring(i2Index + 1, j2Index).toInt();
+      surrounding[2] = cameraLBuf.substring(i2Index + 1, j2Index).toInt()*2;
     }
     if (j2Index != -1) {
       int next2Index = j2Index + 1;
       while (next2Index < cameraLBuf.length() && isDigit(cameraLBuf[next2Index])) {
         next2Index++;
       }
-      surrounding[3] = cameraLBuf.substring(j2Index + 1, next2Index).toInt();
+      surrounding[3] = cameraLBuf.substring(j2Index + 1, next2Index).toInt()*2;
     }
     /*
     int cameraLBufLen = cameraLBuf.length();
