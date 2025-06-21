@@ -188,7 +188,7 @@ while(True):
             #rads4=math.floor(rads4/20)*20
         # else:
             #rads4=math.floor(abs(rads4)/20)*(-20)
-         #istance_y = int(math.sqrt((cxD-tateline)**2+(cyD-yokoline)**2))
+         distance_y = int(math.sqrt((cxD-tateline)**2+(cyD-yokoline)**2))
 
 
         """
