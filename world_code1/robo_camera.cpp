@@ -19,10 +19,12 @@ int goRad = 185;
 int radsbr;
 int radsbl;
 int* ballRD;
-String atack_goal_color = "";
+String atack_goal_color = "blue";
 
 String cameraLBuf = "";
 String cameraRBuf = "";
+
+unsigned long lastKickTime = 0;
 
 int* cameraCheck(){
   if (Serial1.available() > 0) {
@@ -54,7 +56,12 @@ int* cameraCheck(){
     if (head == 'a') {
       int kickcheck = Serial1.read();
       if(kickcheck == 1) {
-        kickMode = true;
+        unsigned long now = millis();
+        if(now-lastKickTime > 500){
+          kickMode = true;
+          Serial.println("Kick Mode: ON");
+          lastKickTime = now;
+        }
       }
     }
     head = Serial1.read();
