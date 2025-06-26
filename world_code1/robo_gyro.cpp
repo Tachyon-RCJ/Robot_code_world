@@ -16,10 +16,27 @@ void mpu_setup() {
     mpu.initialize();
     mpu.dmpInitialize();
     mpu.setDMPEnabled(true);
-    mpu.setXGyroOffset(27);
-    mpu.setYGyroOffset(-40);
-    mpu.setZGyroOffset(85);
-    mpu.setZAccelOffset(1105);
+    //--------------daisen-----------
+    
+    mpu.setXAccelOffset(-2852);
+    mpu.setYAccelOffset(-2302);
+    mpu.setZAccelOffset(1382);
+    mpu.setXGyroOffset(-1);
+    mpu.setYGyroOffset(9);
+    mpu.setZGyroOffset(107);
+    
+    //-----------pololu------------------------
+    //mpu.setXAccelOffset(-36);
+    //mpu.setYAccelOffset(1132);
+    //mpu.setZAccelOffset(1104);
+    //mpu.setXGyroOffset(28);
+    //mpu.setYGyroOffset(-40);
+    //mpu.setZGyroOffset(89);
+    //-----------------------------------------
+    //mpu.CalibrateAccel(6);
+    //mpu.CalibrateGyro(6);
+    //mpu.PrintActiveOffsets();
+    //------------------------------------------
     mpuIntStatus = mpu.getIntStatus();
     packetSize = mpu.dmpGetFIFOPacketSize();
     setJairo();

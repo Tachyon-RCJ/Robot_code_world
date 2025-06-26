@@ -25,6 +25,7 @@ String cameraLBuf = "";
 String cameraRBuf = "";
 
 unsigned long lastKickTime = 0;
+int value_check;
 
 int* cameraCheck(){
   if (Serial1.available() > 0) {
@@ -66,31 +67,52 @@ int* cameraCheck(){
     }
     head = Serial1.read();
     if (head == 'o') {
-      surrounding[10] = Serial1.read()*2;
+      value_check = Serial1.read();
+      if(value_check >= 0){
+        surrounding[10] = value_check*2;
+      }
     }
     head = Serial1.read();
     if (head == 'p') {
-      surrounding[9] = Serial1.read()*2;
+      value_check = Serial1.read();
+      if(value_check >= 0){
+        surrounding[9] = value_check*2;
+      }
     }
     head = Serial1.read();
     if (head == 'q') {
-      surrounding[8] = Serial1.read()*2;
+      value_check = Serial1.read();
+      if(value_check >= 0){
+        surrounding[8] = value_check*2;
+      }
     }
     head = Serial1.read();
     if (head == 'r') {
-      surrounding[7] = Serial1.read()*2;
+      value_check = Serial1.read();
+      if(value_check >= 0){
+        surrounding[7] = value_check*2;
+      }
     }
     head = Serial1.read();
     if (head == 's') {
-      surrounding[6] = Serial1.read()*2;
+      value_check = Serial1.read();
+      if(value_check >= 0){
+        surrounding[6] = value_check*2;
+      }
     }
     head = Serial1.read();
     if (head == 't') {
-      surrounding[5] = Serial1.read()*2;
+      value_check = Serial1.read();
+      if(value_check >= 0){
+        surrounding[5] = value_check*2;
+      }
     }
     head = Serial1.read();
     if (head == 'u') {
-      surrounding[4] = Serial1.read()*2;
+      value_check = Serial1.read();
+      if(value_check >= 0){
+        surrounding[4] = value_check*2;
+      }
     /*
     } else if (head == 'c') {
       shootSubSend = false;
@@ -148,23 +170,38 @@ int* cameraCheck(){
       //rWorldSize = cameraRBuf.substring(b1Index + 1, f1Index).toInt();
     //}
     if (f1Index != -1 && g1Index != -1) {
-      surrounding[15] = cameraRBuf.substring(f1Index + 1, g1Index).toInt()*2;
+      value_check = cameraRBuf.substring(f1Index + 1, g1Index).toInt();
+      if(value_check >= 0){
+        surrounding[15] = value_check*2;
+      }
     }
     if (g1Index != -1 && h1Index != -1) {
-      surrounding[14] = cameraRBuf.substring(g1Index + 1, h1Index).toInt()*2;
+      value_check = cameraRBuf.substring(g1Index + 1, h1Index).toInt();
+      if(value_check >= 0){
+        surrounding[14] = value_check*2;
+      }
     }
     if (h1Index != -1 && i1Index != -1) {
-      surrounding[13] = cameraRBuf.substring(h1Index + 1, i1Index).toInt()*2;
+      value_check = cameraRBuf.substring(h1Index + 1, i1Index).toInt();
+      if(value_check >= 0){
+        surrounding[13] = value_check*2;
+      }
     }
     if (i1Index != -1 && j1Index != -1) {
-      surrounding[12] = cameraRBuf.substring(i1Index + 1, j1Index).toInt()*2;
+      value_check = cameraRBuf.substring(i1Index + 1, j1Index).toInt();
+      if(value_check >= 0){
+        surrounding[12] = value_check*2;
+      }
     }
     if (j1Index != -1) {
       int nextIndex = j1Index + 1;
       while (nextIndex < cameraRBuf.length() && isDigit(cameraRBuf[nextIndex])) {
         nextIndex++;
       }
-      surrounding[11] = cameraRBuf.substring(j1Index + 1, nextIndex).toInt()*2;
+      value_check = cameraRBuf.substring(j1Index + 1, nextIndex).toInt();
+      if(value_check >= 0){
+        surrounding[11] = value_check*2;
+      }
     }
     /*
     if (cameraRBuf.charAt(cameraRBufLen - 1) == 'd'){
@@ -234,23 +271,38 @@ int* cameraCheck(){
       //lWorldSize = cameraLBuf.substring(b2Index + 1, f2Index).toInt();
     //}
     if (f2Index != -1 && g2Index != -1) {
-      surrounding[15] = max(surrounding[15], cameraLBuf.substring(f2Index + 1, g2Index).toInt())*2;
+      value_check = cameraLBuf.substring(f2Index + 1, g2Index).toInt();
+      if(value_check >= 0){
+        surrounding[15] = max(surrounding[15],value_check*2);
+      }
     }
     if (g2Index != -1 && h2Index != -1) {
-      surrounding[0] = cameraLBuf.substring(g2Index + 1, h2Index).toInt()*2;
+      value_check = cameraLBuf.substring(g2Index + 1, h2Index).toInt();
+      if(value_check >= 0){
+        surrounding[0] = value_check*2;
+      }
     }
     if (h2Index != -1 && i2Index != -1) {
-      surrounding[1] = cameraLBuf.substring(h2Index + 1, i2Index).toInt()*2;
+      value_check = cameraLBuf.substring(h2Index + 1, i2Index).toInt();
+      if(value_check >= 0){
+        surrounding[1] = value_check*2;
+      }
     }
     if (i2Index != -1 && j2Index != -1) {
-      surrounding[2] = cameraLBuf.substring(i2Index + 1, j2Index).toInt()*2;
+      value_check = cameraLBuf.substring(i2Index + 1, j2Index).toInt();
+      if(value_check >= 0){
+        surrounding[2] = value_check*2;
+      }
     }
     if (j2Index != -1) {
       int next2Index = j2Index + 1;
       while (next2Index < cameraLBuf.length() && isDigit(cameraLBuf[next2Index])) {
         next2Index++;
       }
-      surrounding[3] = cameraLBuf.substring(j2Index + 1, next2Index).toInt()*2;
+      value_check = cameraLBuf.substring(j2Index + 1, next2Index).toInt();
+      if(value_check >= 0){
+        surrounding[0] = value_check*2;
+      }
     }
     /*
     int cameraLBufLen = cameraLBuf.length();

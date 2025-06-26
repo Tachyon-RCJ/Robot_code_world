@@ -19,6 +19,7 @@ int LED=0; //角度をLED位置に変換後の値
 //=============================================================================
 
 //==========LINE_DEFINE========================================================
+int lineVal[4] = {0, 0, 0, 0};
 #include "robo_line.hpp"
 //=============================================================================
 
@@ -88,7 +89,7 @@ void setup() {
   pid.SetSampleTime(10); // PID制御の更新周期（ミリ秒）
   LittleFS.begin();
   posi = "attacker";
-  /*
+  
   if(digitalRead(23) == HIGH){
     atack_goal_color = "blue";
     pixels.setPixelColor(5, pixels.Color(0,0,2));
@@ -100,12 +101,12 @@ void setup() {
     pixels.setPixelColor(6, pixels.Color(2,2,0));
     pixels.show();
   }
-    */
+  
   mySerial.println("Se/PChange");
-  tone(PINNO,370,BEAT) ; // ファ#
-  delay(BEAT) ;
-  tone(PINNO,293,BEAT) ; // レ
-  delay(BEAT) ;
+  //tone(PINNO,370,BEAT) ; // ファ#
+  //delay(BEAT) ;
+  //tone(PINNO,293,BEAT) ; // レ
+  //delay(BEAT) ;
   //tone(PINNO,220,BEAT) ; // ラ
   //delay(BEAT) ;
   //tone(PINNO,293,BEAT) ; // レ
@@ -178,7 +179,10 @@ void loop() {
   
   if(abs(gbrads) < 130 && atack_goal_color == "blue"){
     pitch = gbrads*(-1);
+  } else if(abs(gyrads) < 130 && atack_goal_color == "yellow"){
+    pitch = gyrads*(-1);
   }
+  
   
 
   /*
@@ -202,8 +206,8 @@ void loop() {
   if (strongTurn){
     MoterSerial(170, 170, -170, -170);
   }
-  Serial.println(String(pitch) + " " + String(gbrads) + " " + String(jairo));
-  pinkColorWaveStep();
+  //Serial.println(String(pitch) + " " + String(gbrads) + " " + String(jairo));
+  //pinkColorWaveStep();
   //Serial.println(String(intoutput));
   /*
   MoterSerial(intoutput, intoutput, -intoutput, -intoutput);
@@ -323,10 +327,25 @@ void loop1() {
   lineVal[1] = analogRead(27);
   lineVal[2] = analogRead(28);
   lineVal[3] = analogRead(29);
+  Serial.print(lineVal[0]);
+  Serial.print(",");
+  Serial.print(lineVal[1]);
+  Serial.print(",");
+  Serial.print(lineVal[2]);
+  Serial.print(",");
+  Serial.println(lineVal[3]);
 
   if (!strongTurn){
-    if (true){
-    //if (lineCheck()){
+    //if (true){
+    if (lineCheck(lineVal)){
+      pixels.setPixelColor(3, pixels.Color(0,0,0));
+      pixels.setPixelColor(4, pixels.Color(0,0,0));
+      pixels.setPixelColor(5, pixels.Color(0,0,0));
+      pixels.setPixelColor(6, pixels.Color(0,0,0));
+      pixels.setPixelColor(7, pixels.Color(0,0,0));
+      pixels.setPixelColor(8, pixels.Color(0,0,0));
+      pixels.setPixelColor(9, pixels.Color(0,0,0));
+      pixels.show();
       //delay(3000);
       //MoterSerialPR(0,0);
       //MoterSerialPR(200,0);
@@ -353,6 +372,15 @@ void loop1() {
       //blshoot(0);
       //delay(5000);
     //}
+    } else {
+      pixels.setPixelColor(3, pixels.Color(5,0,0));
+      pixels.setPixelColor(4, pixels.Color(5,0,0));
+      pixels.setPixelColor(5, pixels.Color(5,0,0));
+      pixels.setPixelColor(6, pixels.Color(5,0,0));
+      pixels.setPixelColor(7, pixels.Color(5,0,0));
+      pixels.setPixelColor(8, pixels.Color(5,0,0));
+      pixels.setPixelColor(9, pixels.Color(5,0,0));
+      pixels.show();
     }
   }
   /*
@@ -397,6 +425,7 @@ void setColor(int *ledArray, int *color) {
     }
   }
 }
+/*
 void pinkColorWaveStep() {
     static int t = 0;
     for (int i = 0; i < LED_COUNT; i++) {
@@ -413,6 +442,7 @@ void pinkColorWaveStep() {
     pixels.show();
     t++;
 }
+    */
 //=============================================================================
 
 //==========MONITOR============================================================

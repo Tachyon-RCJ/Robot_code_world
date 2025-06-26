@@ -5,10 +5,10 @@
 
 extern int preRads;
 extern int lineFound[2];
-extern int lineVal[4];
 extern int lineOutVal[4];
 extern int outTime;
 extern int stopTime;
+extern int powermx;
 extern unsigned long startTime;
 extern const unsigned long settingTime;
 
@@ -24,7 +24,8 @@ extern int surrounding[16];
 
 void loodLineSet();
 void lineSet(int i);
-bool lineCheck();
+bool lineCheck(int *sensorVal);
 void kaihi_check();
+void MoterSerialPR(int p,int r);
 
 #endif

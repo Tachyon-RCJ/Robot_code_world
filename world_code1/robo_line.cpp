@@ -1,10 +1,11 @@
 #include "robo_line.hpp"
 #include <LittleFS.h>
+#define PINNO 13
+#define BEAT 200
 
 int preRads;
 int lineFound[2] = {0, 0};
-int lineVal[4] = {0, 0, 0, 0};
-int lineOutVal[4] = {35, 35, 35, 35};
+int lineOutVal[4] = {100, 100, 100, 100};
 int outTime = 200;
 int stopTime = 100;
 unsigned long startTime;
@@ -50,14 +51,22 @@ void lineSet(int i) {
     file.close();
 }
 
-bool lineCheck() {
+bool lineCheck(int *sensorVal) {
     preRads = 0; // 必要に応じて修正
     int found = 0;
-    if (lineVal[0] > lineOutVal[0]) found++;
-    if (lineVal[1] > lineOutVal[1]) found++;
-    if (lineVal[2] > lineOutVal[2]) found++;
-    if (lineVal[3] > lineOutVal[3]) found++;
-    return found == 0;
+    if (sensorVal[0] > lineOutVal[0]) found++;
+    if (sensorVal[1] > lineOutVal[1]) found++;
+    if (sensorVal[2] > lineOutVal[2]) found++;
+    if (sensorVal[3] > lineOutVal[3]) found++;
+    if (found != 0){
+      MoterSerialPR(powermx,preRads+180);
+      delay(stopTime);
+      MoterSerialPR(powermx,kaihi_muki_k);
+      delay(outTime);
+      return false;
+    } else {
+      return true;
+    }
 }
 
 void kaihi_check(){
