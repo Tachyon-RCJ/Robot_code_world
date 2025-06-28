@@ -20,35 +20,65 @@ float kaihi_y_k = 0;
 float kaihi_speed_k = 0;
 float kaihi_muki_k = 0;
 
-void loodLineSet() {
-    File file = LittleFS.open("/libo.txt", "r");
-    String readLineBorder = file.readString();
-    file.close();
-    int loodBorderIndex = 0;
-    int loodBorderStart = 0;
-    int loodBorderEnd = readLineBorder.indexOf(',');
-    while (loodBorderEnd >= 0) {
-        lineOutVal[loodBorderIndex++] = readLineBorder.substring(loodBorderStart, loodBorderEnd).toInt();
-        loodBorderStart = loodBorderEnd + 1;
-        loodBorderEnd = readLineBorder.indexOf(',', loodBorderStart);
-    }
-    lineOutVal[loodBorderIndex++] = readLineBorder.substring(loodBorderStart).toInt();
+void loodLineSet(){
+  File file = LittleFS.open("/libo.txt", "r");
+  String readLineBorder = file.readString();
+  file.close();
+  int loodBorderIndex = 0;
+  int loodBorderStart = 0;
+  int loodBorderEnd = readLineBorder.indexOf(',');
+  while (loodBorderEnd >= 0) {
+    lineOutVal[loodBorderIndex++] = readLineBorder.substring(loodBorderStart, loodBorderEnd).toInt();
+    loodBorderStart = loodBorderEnd + 1;
+    loodBorderEnd = readLineBorder.indexOf(',', loodBorderStart);
+  }
+  lineOutVal[loodBorderIndex++] = readLineBorder.substring(loodBorderStart).toInt();
+  char BoderSendBuffer[100];
+  sprintf(BoderSendBuffer,"LineBorder:26P:%d, 27P:%d, 28P:%d, 29P:%d", lineOutVal[0], lineOutVal[1], lineOutVal[2], lineOutVal[3]);
+  mySerial.println(BoderSendBuffer);
 }
 
 void lineSet(int i) {
-    int lineMaxVal = 0;
-    int lineMinVal = 255;
-    startTime = millis();
-    while (millis() - startTime < settingTime) {
-        int value = analogRead(26 + i);
-        if (value > lineMaxVal) lineMaxVal = value;
-        if (value < lineMinVal) lineMinVal = value;
+  tone(PINNO,370,BEAT) ; // ファ#
+  delay(BEAT) ;
+  tone(PINNO,293,BEAT) ; // レ
+  delay(BEAT) ;
+  tone(PINNO,220,BEAT) ; // ラ
+  delay(BEAT) ;
+  int lineMaxVal = 0;
+  int lineMinVal = 255;
+  startTime = millis();
+  const unsigned long sendInterVal = 10;
+  int sendCount = 0;
+  while (millis() - startTime < settingTime) {
+    int value = analogRead(26+i);
+    //最大値最小値確認
+    if (value > lineMaxVal){
+      lineMaxVal = value;
     }
-    lineOutVal[i] = (lineMaxVal + lineMinVal) / 2.0;
-    File file = LittleFS.open("/libo.txt", "w");
-    String writeLineBorder = String(lineOutVal[0]) + "," + String(lineOutVal[1]) + "," + String(lineOutVal[2]) + "," + String(lineOutVal[3]);
-    file.print(writeLineBorder);
-    file.close();
+    if (value < lineMinVal){
+      lineMinVal = value;
+    }
+    if (value > (lineMaxVal-lineMinVal)/2.0){
+      tone(PINNO,220,BEAT) ; // ラ
+    }
+    if((int)((millis() - startTime)/sendInterVal) > sendCount){
+      sendCount++;
+      mySerial.print("WDS/LSVal/");
+      mySerial.println(String(value));
+    }
+  }
+  lineOutVal[i] = (lineMaxVal + lineMinVal) / 2.0;
+  tone(PINNO,330,BEAT) ; // ミ
+  delay(BEAT) ;
+  tone(PINNO,330,BEAT) ; // ミ
+  delay(BEAT) ;
+  File file = LittleFS.open("/libo.txt", "w");
+  String writeLineBorder = String(lineOutVal[0])+","+String(lineOutVal[1])+","+String(lineOutVal[2])+","+String(lineOutVal[3]);
+  file.print(writeLineBorder);
+  file.close();
+  mySerial.print("WDS/LBorV/");
+  mySerial.println(String(lineOutVal[i]));
 }
 
 bool lineCheck(int *sensorVal) {
