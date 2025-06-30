@@ -31,7 +31,7 @@ int k_roboGoRad(int r, int d){
         reRad = -90;
     }
   } else {
-    reRad = r;
+    reRad = 185;
   }
 
   if(reRad < -180){//絶対値が180を超えないように
