@@ -18,12 +18,12 @@ void mpu_setup() {
     mpu.setDMPEnabled(true);
     //--------------daisen-----------
     
-    mpu.setXAccelOffset(-2852);
-    mpu.setYAccelOffset(-2302);
-    mpu.setZAccelOffset(1382);
-    mpu.setXGyroOffset(-1);
-    mpu.setYGyroOffset(9);
-    mpu.setZGyroOffset(107);
+    mpu.setXAccelOffset(-2847);
+    mpu.setYAccelOffset(-2304);
+    mpu.setZAccelOffset(1350);
+    mpu.setXGyroOffset(2);
+    mpu.setYGyroOffset(7);
+    mpu.setZGyroOffset(63);
     
     //-----------pololu------------------------
     //mpu.setXAccelOffset(-36);

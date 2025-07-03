@@ -3,6 +3,8 @@
 
 extern float kaihi_x_k;
 extern float kaihi_y_k;
+extern int lineVal[4];
+extern int lineOutVal[4];
 extern int goPosition[2];
 extern int positionRange;
 

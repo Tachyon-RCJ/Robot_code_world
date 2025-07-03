@@ -10,8 +10,8 @@ bool strongTurn = false;//スタート時に回転する
 
 String M1, M2, M3, M4;
 float Moterhelp[4] = {1, 1, 1, 1};
-int powermx = 220;
-int putPower = 220;
+int powermx = 150;
+int putPower = 150;
 
 int pidCalculate(float p){
     Input = p;
