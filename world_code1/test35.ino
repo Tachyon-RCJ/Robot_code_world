@@ -89,6 +89,7 @@ void setup() {
   pid.SetSampleTime(10); // PID制御の更新周期（ミリ秒）
   LittleFS.begin();
   posi = "attacker";
+  //posi = "keeper";
   
   if(digitalRead(23) == HIGH){
     atack_goal_color = "blue";
@@ -103,10 +104,10 @@ void setup() {
   }
   
   mySerial.println("Se/PChange");
-  //tone(PINNO,370,BEAT) ; // ファ#
-  //delay(BEAT) ;
-  //tone(PINNO,293,BEAT) ; // レ
-  //delay(BEAT) ;
+  tone(PINNO,370,BEAT) ; // ファ#
+  delay(BEAT) ;
+  tone(PINNO,293,BEAT) ; // レ
+  delay(BEAT) ;
   //tone(PINNO,220,BEAT) ; // ラ
   //delay(BEAT) ;
   //tone(PINNO,293,BEAT) ; // レ
@@ -299,8 +300,11 @@ void loop1() {
   Serial.print(" d:");
   Serial.print(String(ballRD[1]));
   */
-  
-  goRad = roboGoRad(ballRD[0], ballRD[1]);
+  if(posi == "attacker"){
+    goRad = a_roboGoRad(ballRD[0], ballRD[1]);
+  } else {
+    goRad = k_roboGoRad(ballRD[0], ballRD[1]);
+  }
   /*
   Serial.print(" go:");
   Serial.print(String(goRad));
@@ -336,8 +340,9 @@ void loop1() {
   Serial.println(lineVal[3]);
 
   if (!strongTurn){
-    //if (true){
-    if (lineCheck(lineVal)){
+    if (true){
+    
+    //if (lineCheck(lineVal)){
       pixels.setPixelColor(3, pixels.Color(0,0,0));
       pixels.setPixelColor(4, pixels.Color(0,0,0));
       pixels.setPixelColor(5, pixels.Color(0,0,0));

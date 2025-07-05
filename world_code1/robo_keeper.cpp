@@ -1,6 +1,7 @@
+#include <Arduino.h>
 #include "robo_mode.hpp"
 
-int backhome(){
+int k_backhome(){
   int xposition = kaihi_x_k - goPosition[0];
   int yposition = kaihi_y_k - goPosition[1];
   if(abs(xposition) <= positionRange && abs(yposition) <= positionRange) return 185;
@@ -15,31 +16,22 @@ int backhome(){
   return 185;
 }
 
-int a_roboGoRad(int r, int d){
-  /*
-  Serial.print(" r:");
-  Serial.print(String(r));
-  Serial.print(" d:");
-  Serial.println(String(d));
-  */
+int k_roboGoRad(int r, int d){
   if(abs(r) > 181){
       return 185;
   }
-  int reRad = r*1.5;
+  int reRad;
   
   if(d != -1){
-    /*
-    if((45 <= abs(r) <= 70) && (d < 90)){//機体の近くのボールは大きめに回り込む
-      reRad = r*2.8;
-    }
-    */
-    if(abs(r) > 110){ //遠かったら近くまで行く
-      if(d > 190){
-        reRad = r;
-      }
+    if(abs(r) > 20){
+        return 185;
+    } else if(r > 0){
+        reRad = 90;
+    } else if(r < 0){
+        reRad = -90;
     }
   } else {
-    reRad = r;
+    reRad = 185;
   }
 
   if(reRad < -180){//絶対値が180を超えないように

@@ -2,6 +2,9 @@
 #define ROBO_LINE_H
 
 #include <Arduino.h>
+#include <SoftwareSerial.h>
+
+extern SoftwareSerial mySerial;
 
 extern int preRads;
 extern int lineFound[2];

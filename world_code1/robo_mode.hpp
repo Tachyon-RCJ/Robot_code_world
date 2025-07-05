@@ -7,6 +7,8 @@ extern int goPosition[2];
 extern int positionRange;
 
 int backhome();
-int roboGoRad(int r, int d);
+int k_backhome();
+int a_roboGoRad(int r, int d);
+int k_roboGoRad(int r, int d);
 
 #endif
