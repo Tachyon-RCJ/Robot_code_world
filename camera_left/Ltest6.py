@@ -189,13 +189,14 @@ while True:
             else:
                 rectO=cxO=cyO=radsO=pixel1=0
 
-        if cxO!=0 and DESIGN:#ボールの場所を画面に表示
-          img.draw_rectangle(rectO,(255,0,0))#長方形の生成
-          img.draw_cross(cxO, cyO) #中央のバツの生成
-          if areaO != 0:
-            img.draw_line(197,323,cxO,cyO,(255,255,255))
-          else:
-            img.draw_line(197,323,cxO,cyO,(255,128,0))
+        if cxO!=0:#ボールの場所を画面に表示
+          if DESIGN:
+              img.draw_rectangle(rectO,(255,0,0))#長方形の生成
+              img.draw_cross(cxO, cyO) #中央のバツの生成
+              if areaO != 0:
+                img.draw_line(197,323,cxO,cyO,(255,255,255))
+              else:
+                img.draw_line(197,323,cxO,cyO,(255,128,0))
           #img.draw_line(tateline,240,tateline-80,0,(0,255,255))
         else:
           radsO=185
