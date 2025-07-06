@@ -143,7 +143,7 @@ while(True):
         blobs = img.find_blobs([thresholds1], pixels_threshold=1, area_threshold=4, merge=True,margin=3)#ボールの色探索
         if blobs:
             for b in blobs:
-                if b.area() > areaA and BSR ** 2 <= ((b.cx() - BX) ** 2) + ((b.cy() - BY) ** 2) <= BLR:
+                if b.area() > areaA and BSR ** 2 <= ((b.cx() - BX) ** 2) + ((b.cy() - BY) ** 2) <= BLR ** 2:
                     areaA = b.area()
                     cxA=b.cx()
                     cyA=b.cy()
