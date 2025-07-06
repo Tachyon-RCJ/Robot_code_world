@@ -25,7 +25,23 @@ int a_roboGoRad(int r, int d){
   if(abs(r) > 181){
       return 185;
   }
-  int reRad = r*1.5;
+  int reRad = r*1.5; // 修正後の角度を初期化
+
+  if(abs(r) < 75){
+    if (d > 250) {
+        reRad = r*1.2; // 無補正
+    } else if (d < 50) {
+        reRad = r * 1.5; // 最大補正
+    } else {
+        // 50 <= d <= 250 のときの線形補正係数の計算
+        double k = 1.5 - (0.3 * (d - 50) / 200.0); // 傾き -0.3 / 200
+        reRad = r * k;
+    }
+  }
+  if(abs(r) <= 10){
+    reRad = 0;
+  }
+
   
   if(d != -1){
     /*
@@ -34,7 +50,7 @@ int a_roboGoRad(int r, int d){
     }
     */
     if(abs(r) > 110){ //遠かったら近くまで行く
-      if(d > 190){
+      if(d > 230){
         reRad = r;
       }
     }
