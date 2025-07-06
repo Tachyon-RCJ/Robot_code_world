@@ -5,7 +5,6 @@
 
 int preRads;
 int lineFound[2] = {0, 0};
-int lineOutVal[4] = {100, 100, 100, 100};
 int outTime = 200;
 int stopTime = 100;
 unsigned long startTime;
@@ -21,6 +20,7 @@ float kaihi_speed_k = 0;
 float kaihi_muki_k = 0;
 
 void loodLineSet(){
+  /*
   File file = LittleFS.open("/libo.txt", "r");
   String readLineBorder = file.readString();
   file.close();
@@ -36,6 +36,7 @@ void loodLineSet(){
   char BoderSendBuffer[100];
   sprintf(BoderSendBuffer,"LineBorder:26P:%d, 27P:%d, 28P:%d, 29P:%d", lineOutVal[0], lineOutVal[1], lineOutVal[2], lineOutVal[3]);
   mySerial.println(BoderSendBuffer);
+  */
 }
 
 void lineSet(int i) {
@@ -89,6 +90,7 @@ bool lineCheck(int *sensorVal) {
     if (sensorVal[2] > lineOutVal[2]) found++;
     if (sensorVal[3] > lineOutVal[3]) found++;
     if (found != 0){
+      tone(PINNO,330,BEAT) ; // ミ
       MoterSerialPR(powermx,preRads+180);
       delay(stopTime);
       MoterSerialPR(powermx,kaihi_muki_k);
