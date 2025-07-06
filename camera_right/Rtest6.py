@@ -164,7 +164,7 @@ while True:
         blobs = img.find_blobs([thresholds_o], pixels_threshold=1, area_threshold=1, merge=True,margin=3)#ボールの色探索
         if blobs:
             for b in blobs:
-                if b.area() > areaO:
+                if b.area() > areaO and ((b.cx() - BX) ** 2) + ((b.cy() - BY) ** 2) < BR ** 2:
                    areaO = b.area()
                    cxO=b.cx()
                    cyO=b.cy()
@@ -238,6 +238,7 @@ while True:
         if DESIGN:
             img.draw_line(0,yokoline,320,yokoline)#横線の描画
             img.draw_line(tateline,0,tateline,240)#縦線の描画
+            img.draw_circle(BX,BY,BR,(0, 255, 255))
         pixeluart = int(pixel1*0.2)
         uart_out.write("r")
         uart_out.write(str(radsO))
