@@ -3,7 +3,7 @@
 #include "I2Cdev.h"
 #include "robo_gyro.hpp"
 float jairo = 0;
-bool searchflag = false;
+bool searchflag = true;
 bool backgoalfrontflag = false;
 
 #include "robo_moter.hpp"
@@ -74,7 +74,7 @@ bool drCatch = false;
 
 #include "robo_serial.hpp"
 
-SoftwareSerial mySerial1(11, 12); // RX, TX
+SoftwareSerial mySerial1(19, 20); // RX, TX
 SoftwareSerial mySerial2(17, 16); // RX, TX
 #include <math.h>
 //==========MAIN===============================================================
@@ -109,11 +109,6 @@ void setup() {
     pixels.setPixelColor(5, pixels.Color(2,2,0));
     pixels.setPixelColor(6, pixels.Color(2,2,0));
     pixels.show();
-  }
-  if (digitalRead(24) == HIGH){
-    posi = "keeper";
-  } else {
-    posi = "attacker";
   }
   
   mySerial.println("Se/PChange");
@@ -155,6 +150,9 @@ void loop() {
   
   jairo = getJairo();
   float pitch = jairo;
+
+  //gbrads = 0;
+  //gyrads = 0;
   
   if (abs(pitch) > 130){
     strongTurn = true;
@@ -228,7 +226,8 @@ void loop() {
     pixels.setPixelColor(6, pixels.Color(0,2,0));
     pixels.show();
   }
-  if(kickMode && !checkComm()){
+  //if(kickMode && !checkComm()){
+  if(kickMode){
     digitalWrite(6, HIGH);
     delay(200);
     digitalWrite(6, LOW);
@@ -241,20 +240,20 @@ void loop() {
 void setup1(){
   Serial.begin(38400);
   //Serial.setTimeout(10);
-  Serial1.begin(115200);
+  Serial1.begin(9600);
   Serial2.setTX(8);
   Serial2.setRX(9);
   Serial2.begin(115200);
   mySerial.begin(38400);
   mySerial.setTimeout(10);
   mySerial1.begin(115200);
-  mySerial1.setTimeout(10);
+  mySerial1.setTimeout(50);
   mySerial2.begin(115200);
-  mySerial2.setTimeout(10);
+  mySerial2.setTimeout(50);
 }
 
 void loop1() {
-  Serial.println("loop1");
+  //Serial.println("loop1");
   putPower = 200;
   ballRD = cameraCheck();
   //kaihi_check();
@@ -275,14 +274,12 @@ void loop1() {
     //if (lineCheck(lineVal)){
       //delay(3000);
       //MoterSerialPR(0,0);
-      MoterSerialPR(255,0);
-      /* 
+      //MoterSerialPR(255,0); 
       if (abs(goRad) < 181){
         MoterSerialPR(putPower,goRad);
       } else {
         MoterSerialPR(0,0);
       }
-        */
       
       //delay(3000);
       /*
@@ -301,7 +298,7 @@ void loop1() {
   //serial表示------------------------------------------------------
   //serial_surrounding();//カメラLiDAR
   //serial_goal();//ゴール方向確認
-  //serial_ultrasonic();//超音波センサ
+  serial_ultrasonic();//超音波センサ
   //serial_kaihi();//カメラLiDARから導き出される位置
   //serial_RDGO();//現在のボール情報(r,d)を表示
   //serial_line();//ラインセンサ

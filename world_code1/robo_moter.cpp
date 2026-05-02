@@ -41,7 +41,8 @@ void MoterSerial(int m1, int m2, int m3, int m4){
     } else {
         M4="f"+String(mchange[int(abs(m4)/16)])+String(mchange[abs(m4)%16]);
     }
-    if (digitalRead(22) == HIGH && !checkComm()){
+    //if (digitalRead(22) == HIGH && !checkComm()){
+    if (digitalRead(22) == HIGH){
         Serial2.print(M1 + M2 + M3 + M4 + "s");
     } else {
         Serial2.print("00000000s");

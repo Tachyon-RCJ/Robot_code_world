@@ -155,10 +155,11 @@ void commandRead2(String comtxt){
     }
   }
 }
-
+/*
 bool checkComm(){
   if(commuMode[0] == 0 && commuMode[1] == 0){
     return true;
   }
   return false;
 }
+*/

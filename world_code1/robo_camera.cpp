@@ -23,43 +23,55 @@ String atack_goal_color = "blue";
 
 String cameraLBuf = "";
 String cameraRBuf = "";
+String cameraFBuf = "";
 
 unsigned long lastKickTime = 0;
 int value_check;
 
 int* cameraCheck(){
   if (Serial1.available() > 0) {
-    head = Serial1.read();
-    if (head == 'f') {
-      rads = Serial1.read();
-      rads = ((rads/0.694) - 180);
+    cameraFBuf = Serial1.readStringUntil('e');
+
+    int fIndex = cameraFBuf.indexOf('f');
+    int bIndex = cameraFBuf.indexOf('b');
+    int yIndex = cameraFBuf.indexOf('y');
+    int lIndex = cameraFBuf.indexOf('l');
+    int vIndex = cameraFBuf.indexOf('v');
+    int aIndex = cameraFBuf.indexOf('a');
+    int oIndex = cameraFBuf.indexOf('o');
+    int pIndex = cameraFBuf.indexOf('p');
+    int qIndex = cameraFBuf.indexOf('q');
+    int rIndex = cameraFBuf.indexOf('r');
+    int sIndex = cameraFBuf.indexOf('s');
+    int tIndex = cameraFBuf.indexOf('t');
+    int uIndex = cameraFBuf.indexOf('u');
+
+    if (fIndex != -1 && bIndex != -1) {
+      rads = cameraFBuf.substring(fIndex + 1, bIndex).toInt();
+      rads = ((rads / 0.694) - 180);
       putPower = powermx;
     }
-    head = Serial1.read();
-    if (head == 'b') {
-      if(atack_goal_color == "blue"){
-        gbrads = Serial1.read();
-        gbrads = ((gbrads/0.694) - 180);
-      }
+
+    if (bIndex != -1 && yIndex != -1 && atack_goal_color == "blue") {
+      gbrads = cameraFBuf.substring(bIndex + 1, yIndex).toInt();
+      gbrads = ((gbrads / 0.694) - 180);
     }
-    head = Serial1.read();
-    if (head == 'y') {
-      if(atack_goal_color == "yellow"){
-        gyrads = Serial1.read();
-        gyrads = ((gyrads/0.694) - 180); 
-      }
+
+    if (yIndex != -1 && lIndex != -1 && atack_goal_color == "yellow") {
+      gyrads = cameraFBuf.substring(yIndex + 1, lIndex).toInt();
+      gyrads = ((gyrads / 0.694) - 180);
     }
-    head = Serial1.read();
-    if (head == 'l') {
-      fdistance = Serial1.read();
+
+    if (lIndex != -1 && vIndex != -1) {
+      fdistance = cameraFBuf.substring(lIndex + 1, vIndex).toInt();
     }
-    head = Serial1.read();
-    if (head == 'v') {
-      fCameraSize = Serial1.read()*3.3;
+
+    if (vIndex != -1 && aIndex != -1) {
+      fCameraSize = cameraFBuf.substring(vIndex + 1, aIndex).toInt() * 3.3;
     }
-    head = Serial1.read();
-    if (head == 'a') {
-      int kickcheck = Serial1.read();
+
+    if (aIndex != -1 && oIndex != -1) {
+      int kickcheck = cameraFBuf.substring(aIndex + 1, oIndex).toInt();
       if (digitalRead(22) == HIGH){
         if(kickcheck == 1) {
           unsigned long now = millis();
@@ -71,51 +83,51 @@ int* cameraCheck(){
         }
       }
     }
-    head = Serial1.read();
-    if (head == 'o') {
-      value_check = Serial1.read();
+
+    if (oIndex != -1 && pIndex != -1) {
+      value_check = cameraFBuf.substring(oIndex + 1, pIndex).toInt();
       if(value_check >= 0){
         surrounding[10] = value_check*2;
       }
     }
-    head = Serial1.read();
-    if (head == 'p') {
-      value_check = Serial1.read();
+
+    if (pIndex != -1 && qIndex != -1) {
+      value_check = cameraFBuf.substring(pIndex + 1, qIndex).toInt();
       if(value_check >= 0){
         surrounding[9] = value_check*2;
       }
     }
-    head = Serial1.read();
-    if (head == 'q') {
-      value_check = Serial1.read();
+
+    if (qIndex != -1 && rIndex != -1) {
+      value_check = cameraFBuf.substring(qIndex + 1, rIndex).toInt();
       if(value_check >= 0){
         surrounding[8] = value_check*2;
       }
     }
-    head = Serial1.read();
-    if (head == 'r') {
-      value_check = Serial1.read();
+
+    if (rIndex != -1 && sIndex != -1) {
+      value_check = cameraFBuf.substring(rIndex + 1, sIndex).toInt();
       if(value_check >= 0){
         surrounding[7] = value_check*2;
       }
     }
-    head = Serial1.read();
-    if (head == 's') {
-      value_check = Serial1.read();
+
+    if (sIndex != -1 && tIndex != -1) {
+      value_check = cameraFBuf.substring(sIndex + 1, tIndex).toInt();
       if(value_check >= 0){
         surrounding[6] = value_check*2;
       }
     }
-    head = Serial1.read();
-    if (head == 't') {
-      value_check = Serial1.read();
+
+    if (tIndex != -1 && uIndex != -1) {
+      value_check = cameraFBuf.substring(tIndex + 1, uIndex).toInt();
       if(value_check >= 0){
         surrounding[5] = value_check*2;
       }
     }
-    head = Serial1.read();
-    if (head == 'u') {
-      value_check = Serial1.read();
+
+    if (uIndex != -1) {
+      value_check = cameraFBuf.substring(uIndex + 1).toInt();
       if(value_check >= 0){
         surrounding[4] = value_check*2;
       }
@@ -123,7 +135,6 @@ int* cameraCheck(){
   }  
 
   //rightカメラ
-  mySerial1.listen();
   if (mySerial1.available() > 0){
     //radsbrStr = "";
     cameraRBuf = "";
@@ -193,11 +204,9 @@ int* cameraCheck(){
   }
   
   //leftカメラ
-  mySerial2.listen();
   if (mySerial2.available() > 0){
     cameraLBuf = "";
     cameraLBuf = mySerial2.readStringUntil('e');
-    Serial.println(cameraLBuf);
     int r2Index = cameraLBuf.indexOf('r');
     int s2Index = cameraLBuf.indexOf('s');
     int l2Index = cameraLBuf.indexOf('l');

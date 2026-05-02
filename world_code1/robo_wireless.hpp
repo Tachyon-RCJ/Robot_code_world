@@ -44,6 +44,6 @@ void positionSet();
 void commandRead(String comtxt);
 void hexStringToByteArray(const char* hexString, byte* byteArray, int byteArrayLength);
 void commandRead2(String comtxt);
-bool checkComm();
+//bool checkComm();
 
 #endif
